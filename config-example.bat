@@ -1,5 +1,4 @@
 @echo off
-setlocal enabledelayedexpansion
 
 REM Credentials
 set "system_user=mike"
@@ -7,10 +6,11 @@ set "samba_user=john" REM not best practice, samba_user should be the same as sy
 set "samba_password=password"
 
 REM Log directory
-set "log_dir=C:\Users\%system_user%\logs"
+set "log_dir=C:\Users\%system_user%\backup\logs"
 
 REM Source directory
-set "shared_dir_source=\\mike-mikepc12345.local\sambashare"
+set "networkDrive=Z:"
+set "shared_dir_source=\\192.168.0.10\driveName"
 set "shared_dir_mount_target=C:\Users\%system_user%\backup\shared-folder"
 
 REM Destination directory
