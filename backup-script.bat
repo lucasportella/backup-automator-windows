@@ -1,14 +1,15 @@
-@echo off
 echo Starting backup script...
-rem call config.bat
+call config.bat
 
-setlocal enabledelayedexpansion
-
-echo Countdown from 10 seconds:
-
-for /l %%i in (5,-1,1) do (
-    echo !%%i! seconds remaining
-    timeout /nobreak /t 1 >nul
+rem Check if the network drive exists
+if not exist %networkDrive%\ (
+    echo Mapping %networkDrive% to %shared_dir_source%
+    net use %networkDrive% %shared_dir_source% /user:%system_user% %system_password%
+) else (
+    echo %networkDrive% is already mapped
 )
 
-echo Blast off!
+
+REM Unmap the network drive when done (optional)
+@REM net use %networkDrive% /delete
+pause
