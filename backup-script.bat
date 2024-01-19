@@ -1,5 +1,8 @@
 echo Starting backup script...
+
 call config.bat
+
+setlocal EnableDelayedExpansion
 
 rem Source drive directory
 if not exist %networkDrive%\ (
@@ -16,8 +19,6 @@ if exist %destination_dir% (
     mkdir %destination_dir%
 )
 
-
-
 rem Log directory
 if exist %log_dir% (
     echo "Log directory already exists."
@@ -25,14 +26,24 @@ if exist %log_dir% (
     mkdir %log_dir%
 )
 
+REM Get the current date and time
+for /f %%a in ('wmic os get localdatetime ^| find "."') do set "datetime=%%a"
+
+REM Extract year, month, day, hour, and minute from the datetime variable
+set "year=!datetime:~0,4!"
+set "month=!datetime:~4,2!"
+set "day=!datetime:~6,2!"
+set "hour=!datetime:~8,2!"
+set "minute=!datetime:~10,2!"
+
+REM Create the desired timestamp format
+set "timestamp=!year!-!month!-!day!-!hour!-!minute!"
+
 echo Variables created.
 
 echo starting robocopy command...
 rem You can add /MIR parameter to make an exact copy of the source, but if you set the wrong path it will result in data loss.
-robocopy %shared_dir_source% %destination_dir% /XO /R:2 /W:5 /FFT /E /TEE /LOG:%log_dir%"\log.txt"
-
-
-
+robocopy %shared_dir_source% %destination_dir% /XO /R:2 /W:5 /FFT /E /TEE /LOG:%log_dir%"\%timestamp%.txt"
 
 REM Unmap the network drive when done (optional)
 REM net use %networkDrive% /delete
