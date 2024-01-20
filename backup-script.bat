@@ -26,6 +26,9 @@ if exist %log_dir% (
     mkdir %log_dir%
 )
 
+rem Delete log files older than 60 days
+forfiles /p %log_dir% /m *.txt /d -60 /c "cmd /c del @path"
+
 REM Get the current date and time
 for /f %%a in ('wmic os get localdatetime ^| find "."') do set "datetime=%%a"
 
