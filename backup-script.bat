@@ -52,4 +52,3 @@ REM Unmap the network drive when done (optional)
 REM net use %networkDrive% /delete
 
 echo backup script finished.
-pause
